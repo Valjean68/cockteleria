@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>El trago</title>
+	<style type="text/css">
+		li{
+			list-style-type: none;
+			padding-right:3vw;
+			text-align: right;
+
+		}
+		img{
+			height: 60vh;
+			width: auto;
+			border-radius: 5px;
+		}
+		p{
+			width: 60vw;
+		}
+	</style>
+</head>
+<body>
+	<center>
+<div style="justify-content: center;display: flex;">
+	<div class="ingredientes" style="float: left;display: inline-block;"></div>
+	<div class="medidas" style="display: inline-block;"></div>
+</div>
+<div class="tragoensi">
+	
+</div>
+</center>
+<script type="text/javascript">
+let ingredientes=document.querySelector('.ingredientes')
+let medidas=document.querySelector('.medidas')
+	
+let id=localStorage.getItem('id')
+
+let eldisplay=document.querySelector('.tragoensi')
+
+fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`).then(res=>res.json()).then(logg=>{
+	let list=[logg.drinks[0].strIngredient1,logg.drinks[0].strIngredient2,logg.drinks[0].strIngredient3,logg.drinks[0].strIngredient4,logg.drinks[0].strIngredient5,logg.drinks[0].strIngredient6,logg.drinks[0].strIngredient7,logg.drinks[0].strIngredient8,logg.drinks[0].strIngredient9,logg.drinks[0].strIngredient10,logg.drinks[0].strIngredient11]
+
+	let medir=[logg.drinks[0].strMeasure1,logg.drinks[0].strMeasure2,logg.drinks[0].strMeasure3,logg.drinks[0].strMeasure4,logg.drinks[0].strMeasure5,logg.drinks[0].strMeasure6,logg.drinks[0].strMeasure7,logg.drinks[0].strMeasure8,logg.drinks[0].strMeasure9,logg.drinks[0].strMeasure10,logg.drinks[0].strMeasure11]
+
+	medidas.innerHTML=medir.map((item)=>{
+		if(!item) return;
+		return `<li>${item}</li>`
+	}).join('')
+
+	ingredientes.innerHTML=list.map((item)=>{
+		if(!item) return;
+		return `<li>${item} :</li>`
+	}).join('')
+
+	eldisplay.innerHTML=`<h1>${logg.drinks[0].strDrink}</h1><br><img src='${logg.drinks[0].strDrinkThumb}'><br><p>${logg.drinks[0].strInstructions}</p>`
+})
+		
+
+	
+	
+		
+	
+
+</script>
+</body>
+</html>

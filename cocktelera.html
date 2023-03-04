@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<title>Cocktelería</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+
+			input,h1{
+				padding: 3vh;
+			text-align: center;
+		}
+		.main{
+			padding-top: 5vh;
+
+			position: absolute;
+			justify-content: center;
+			align-items: center;
+			width: 100vw;
+			display: grid;
+			grid-template-columns: repeat(auto-fill,minmax(35vh,35vh));
+			column-gap: 3vh;
+			row-gap: 3vh;
+		}
+
+		a{
+			filter: grayscale(100%);
+			width: 35vh;
+			height: 35vh;
+			object-fit: cover;
+			object-position: center;
+			transition: 0.5s;
+			overflow: hidden;
+			
+		}
+		img{
+			height: 100%;
+			width: auto;
+		}
+		a:hover{
+			filter: grayscale(0);
+			cursor: pointer;
+			transform: scale(1.1);
+		}
+
+	</style>
+</head>
+<body>
+<h1>COCKTELERÍA</h1>
+
+<input type="text" class="simaestro">
+	<input type="submit" style="cursor: pointer;" onclick="sebusca()">
+	<div class="main">
+
+	
+	</div>
+<script type="text/javascript">
+
+let elmain=document.querySelector('.main')
+
+
+for(i=0;i<9;i++){
+fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php', { cache: "no-cache" }).then(res=>res.json()).then(imagenrandom=>{
+elmain.innerHTML+=`<a href='eltrago.html'><h4 style='position:absolute;color:white;z-index:3;background:darkgrey;'>${imagenrandom.drinks[0].strDrink}</h4><img onclick='guardavalor(this.id)' id='${imagenrandom.drinks[0].idDrink}' class='tragos' src='${imagenrandom.drinks[0].strDrinkThumb}'></a>`
+})
+
+}
+let busque=document.querySelector('.simaestro')
+function sebusca(){
+	
+	elmain.innerHTML=''
+
+fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${busque.value}`).then(res=>res.json()).then(data=>{
+let mapeado=data.drinks
+
+	elmain.innerHTML=`${mapeado.map(nombres=>`<a href='eltrago.html'><h4 style='position:absolute;color:white;z-index:3;background:darkgrey;'>${nombres.strDrink}</h4><img onclick='guardavalor(this.id)' id='${nombres.idDrink}' class='tragos' src='${nombres.strDrinkThumb}'></a>`).join('')}`
+		
+
+	
+		
+	}).catch(err=>console.log(err))
+}
+
+
+
+
+function guardavalor(imagen){
+localStorage.setItem('id',imagen)
+	
+}
+
+
+
+
+</script>
+</body>
+</html>

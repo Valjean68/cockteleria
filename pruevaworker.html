@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>worker</title>
+</head>
+<body>
+	<div id="counter"></div>
+<script id="myWorker">
+    var i = 0;
+    setInterval(function() {
+        i++;
+        postMessage(i);
+    }, 500);
+
+    var myWorker = null,
+    URL = window.URL || (window.webkitURL); 
+
+window.URL = URL;
+
+var workerData = new Blob([document.getElementById('myWorker').textContent], {
+    type: "text/javascript"
+});
+
+function init() {
+    if (typeof (Worker) === undefined) { 
+        alert('No webworker supported');
+        return false;
+    }
+ 
+    myWorker = new Worker(window.URL.createObjectURL(workerData));
+
+   
+    myWorker.onmessage = function (e) {
+      
+        document.getElementById('counter').innerHTML = e.data;
+    };
+}
+
+init();
+</script>
+
+</body>
+</html>
